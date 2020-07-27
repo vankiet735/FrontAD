@@ -8,12 +8,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import LockIcon from "@material-ui/icons/Lock";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import TextField from '@material-ui/core/TextField';
 import axios from "axios";
 import Cookies from "js-cookie";
+import Profile from './changePassword'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -47,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
     height: "70vh",
     background: "white",
   },
- 
+  titleformInfo: {
+    position: "absolute",
+    marginTop: "65px",
+    marginLeft: 60,
+    fontSize: 17,
+  },
   formControl: {
     paddingTop: "30px",
     paddingLeft: "30px",
@@ -88,66 +91,67 @@ const useStyles = makeStyles((theme) => ({
     marginBottom:'50px'
   },
   textField: {
+    marginTop:'-15px',
     width: 150,
   },
 }));
+
 export default function MenuProfile() {
   const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [DFstate, setDFState] = React.useState({
-    date: "",
-    month: "",
-    year: "",
-  });
-
+ 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+//   const [getDataProfile, setDataProfile] = useState([]);
+//   const token = Cookies.get("token");
+ 
+//   useEffect(() => {
+//     axios
+//       .get("https://navilearn.herokuapp.com/admin/profile", {
+//         headers: { Authorization: `Bearer ${token}` },
+//       })
+//       .then((res) => {
+//         const { data } = res.data;
+//         setDataDefault(data)
+//         setDataProfile(data); //State để lấy dữ liệu profile admin từ api
+//       });
+//   }, []);
 
-  function Repeat(props) {
-    const items = [];
-    for (let i = props.index; i <= props.num; i++) {
-      items.push(i);
-    }
-    return items.map((x, i) => (
-      <option key={i} value={x}>
-        {x}
-      </option>
-    ));
-  }
-  const [getDataProfile, setDataProfile] = useState([]);
-  const [date, setDateTime] = useState([]);
-  const token = Cookies.get("token");
+//   const [dataDefault,setDataDefault]=useState([])
+  
+//   const handleChange = (event) => {
+//       setDataProfile({
+//         [event.target.name]: event.target.value
+//       })
+      
+//   };
 
-  useEffect(() => {
-    axios
-      .get("https://navilearn.herokuapp.com/admin/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        const { data } = res.data;
-        setDataProfile(data); //State để lấy dữ liệu profile admin từ api
-        // var splitted = data.ngay_sinh.split("-", 3); //Tách chuỗi để lấy ngày tháng năm
-        // var ngay = splitted[2].split("T", 2);
-        // const getDay = Number(ngay[0]);
-        // const getMonth = Number(splitted[1]);
-        // const getYear = Number(splitted[0]);
-        // setDateTime({
-        //   date: getDay,
-        //   month: getMonth,
-        //   year: getYear,
-        // });
-      });
-  }, []);
-  const handleChange = (event) => {
-    setDataProfile({
-      [event.target.name]: event.target.value,
-    });
-    setDateTime({
-      [event.target.name]: event.target.value,
-    });
-    console.log(event.target.value);
-  };
+// const onSubmitInfo=(event)=>{
+//   event.preventDefault();
+ 
+//   // const { ho, ten, ngay_sinh } = getDataProfile;
+
+//     var {ho=dataDefault.ho,ten=dataDefault.ten,ngay_sinh=dataDefault.ngay_sinh}=getDataProfile
+//     // setDataProfile(getDataProfile)
+//     console.log(getDataProfile)
+//         axios
+//           .post(
+//             "https://navilearn.herokuapp.com/admin/profile/update",
+//             {ho,ten,ngay_sinh},
+//             {
+//               headers: { Authorization: `Bearer ${token}` },
+//             }
+//           )
+//           .then((res) => {
+//            console.log(res)
+//           }).catch((error) => {
+//             console.log("Lỗi", error.response);
+//           });
+
+// }
+// console.log("DataDefault",dataDefault)
+// console.log("DataOnchange",getDataProfile)
   return (
     <div className="row">
       <div className="col span-1-of-4">
@@ -193,13 +197,13 @@ export default function MenuProfile() {
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText primary="Trash" />
+            <ListItemText primary="......" />
           </ListItem>
         </div>
       </div>
       <div className="col span-3-of-4">
-        <div className={classes.titleformInfo}> Thông tin tài khoản</div>
-        <form>
+        {/* <div className={classes.titleformInfo}> Thông tin tài khoản</div>
+        <form onSubmit={onSubmitInfo}>
           <div className={classes.formInfo}>
             <div className={classes.formControl}>
               <label className={classes.titleFormControl}>Họ</label>
@@ -221,15 +225,7 @@ export default function MenuProfile() {
                 onChange={handleChange}
               />
             </div>
-            {/* <div className={classes.formControl}>
-              <label className={classes.titleFormControl}>Số điện thoại</label>
-              <input
-                className={classes.contentFormControl}
-                type="text"
-                value={state.phoneNumber}
-                onChange={handleChange}
-              />
-            </div> */}
+           
             <div className={classes.formControl}>
               <label className={classes.titleFormControl}>Email</label>
               <input
@@ -240,27 +236,15 @@ export default function MenuProfile() {
                 disabled={true}
               />
             </div>
-            {/* <div className={classes.formControl}>
-                    <label
-                        className={classes.titleFormControl}
-                        style={{ marginTop: "0px" }}
-                    >
-                        Giới tính
-                    </label>
-                    <input type="radio" name="gender" defaultChecked />
-                    Nam
-                    <input type="radio" name="gender" />
-                    Nữ
-                    </div> */}
                     <div className={classes.formControl}>
                   <label className={classes.titleFormControl}>Ngày sinh</label>
             
                   <TextField
-                    
                     id="date"
                     label="Birthday"
-                    type="date"
-                    defaultValue={getDataProfile.ngay_sinh}
+                    type="date"  
+                    name="ngay_sinh"                
+                    value={getDataProfile.ngay_sinh}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
@@ -269,18 +253,21 @@ export default function MenuProfile() {
                   />
                 
             </div>
-              {/* <input className={classes.contentFormControl} type="text" value="Nguyễn Hiếu Luân" /> */}
-
-
               <div className={classes.formControl}>
                 <input
                   className={classes.btnXacnhan}
-                  type="button"
+                  type="submit"
                   value="Cập Nhật"
                 />
             </div>
           </div>
-        </form>
+        </form> */}
+        <Profile title="Thông tin tài khoản" 
+        firstname='Họ'
+        lastname='Tên'
+        birthday='Ngày sinh'
+        email='Email'
+        />
       </div>
     </div>
   );
